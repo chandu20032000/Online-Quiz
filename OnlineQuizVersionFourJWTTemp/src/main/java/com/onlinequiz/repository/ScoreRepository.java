@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.onlinequiz.model.Score;
 
-public interface ScoreRepository extends JpaRepository<Score, Long>{
+//----Score Repository----
+public interface ScoreRepository extends JpaRepository<Score, Long> {
 
 }

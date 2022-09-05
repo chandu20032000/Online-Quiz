@@ -76,18 +76,4 @@ public class SignupRequest {
 	  public void setRole(String role) {
 	    this.role = role;
 	  }
-
-	public SignupRequest(@NotBlank @Size(min = 3, max = 20) String username,
-			@NotBlank @Size(max = 50) @Email String email, @NotBlank @Size(max = 50) String role,
-			@NotBlank @Size(min = 6, max = 40) String password, @NotBlank @Size(min = 1, max = 40) String address,
-			@NotBlank @Size(min = 10, max = 10) String mobile) {
-		super();
-		this.username = username;
-		this.email = email;
-		this.role = role;
-		this.password = password;
-		this.address = address;
-		this.mobile = mobile;
-	}
-	  
 	}

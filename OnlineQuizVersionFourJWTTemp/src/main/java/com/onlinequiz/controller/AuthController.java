@@ -37,124 +37,115 @@ import com.onlinequiz.security.services.UserDetailsImpl;
 @Controller
 
 public class AuthController {
-  @Autowired
-  AuthenticationManager authenticationManager;
 
-  @Autowired
-  UserRepository userRepository;
+	@Autowired
+	AuthenticationManager authenticationManager;
 
-  @Autowired
-  RoleRepository roleRepository;
+	@Autowired
+	UserRepository userRepository;
 
-  @Autowired
-  PasswordEncoder encoder;
+	@Autowired
+	RoleRepository roleRepository;
 
-  @Autowired
-  JwtUtils jwtUtils;
-  
-  String jwtglobal;
-  @ModelAttribute
-  public void setResponseHeader(HttpServletResponse response) {
-      response.setHeader("Authorization", "");
-  }
-  
-  @ModelAttribute("setRole")
-  public String setrole()
-  {
-	  return new String();
-  }
- 
-  @PostMapping("/login")
-  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
-	  //Wrap login info in authentication object
-	  
-    Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-//pass authenticate object to Context
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-    String jwt = jwtUtils.generateJwtToken(authentication);
-    jwtglobal=jwt;
-    //Get roles from UserDetailsImpl
-    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();    
-    List<String> roles = userDetails.getAuthorities().stream()
-        .map(item -> item.getAuthority())
-        .collect(Collectors.toList());
-    
-//return response in JSON object using JWTResponse class
-     
-     
-     return ResponseEntity.ok( new JwtResponse(jwt, 
-             userDetails.getId(), 
-             userDetails.getUsername(), 
-             userDetails.getEmail(),
-             userDetails.getMobile(),
-             userDetails.getAddress(),
-             roles));
-     
-  }
-  
+	@Autowired
+	PasswordEncoder encoder;
 
-  @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest)  {
-    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-    	return ResponseEntity
-    	          .badRequest()
-    	          .body(new MessageResponse("Error: Username is already taken!"));
-    }
+	@Autowired
+	JwtUtils jwtUtils;
 
-    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-    	 return ResponseEntity
-    	          .badRequest()
-    	          .body(new MessageResponse("Error: Email is already in use!"));
-    }
+	String jwtglobal;
 
-    // Create new user's account
-    User user = new User(signUpRequest.getUsername(), 
-               signUpRequest.getEmail(),
-               encoder.encode(signUpRequest.getPassword()),
-               signUpRequest.getMobile(),
-               signUpRequest.getAddress()
-               );
+	@ModelAttribute
+	public void setResponseHeader(HttpServletResponse response) {
+		response.setHeader("Authorization", "");
+	}
 
-    String strRoles = signUpRequest.getRole();
-    Set<Role> roles = new HashSet<>();
+	@ModelAttribute("setRole")
+	public String setrole() {
+		return new String();
+	}
 
-   /* if (strRoles==null) {
-      Role studentRole = roleRepository.findByName(ERole.ROLE_STUDENT)
-          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(studentRole);
-    } else {*/
-      
-        switch (strRoles) {
-        case "admin":
-          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(adminRole);
+	@ModelAttribute("user")
+	public SignupRequest loginModel() {
+		return new SignupRequest();
+	}
 
-          break;
-        case "Student":
-          Role studentRole = roleRepository.findByName(ERole.ROLE_STUDENT)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(studentRole);
+	// --- a REST API to authenticate a user----
+	@PostMapping("/login")
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+		// Wrap login info in authentication object
 
-          break;
-        case "Faculty":
-            Role facultyRole = roleRepository.findByName(ERole.ROLE_FACULTY)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(facultyRole);
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+		// pass authenticate object to Context
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String jwt = jwtUtils.generateJwtToken(authentication);
+		jwtglobal = jwt;
+		// Get roles from UserDetailsImpl
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
+				.collect(Collectors.toList());
 
-            break;
-        default:
-          Role userRole = roleRepository.findByName(ERole.ROLE_STUDENT)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(userRole);
-        }
-      
-    
+		// return response in JSON object using JWTResponse class
 
-    user.setRoles(roles);
-    userRepository.save(user);
+		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(),
+				userDetails.getEmail(), userDetails.getMobile(), userDetails.getAddress(), roles));
 
-    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-  }
+	}
+
+	// --- creating a new user account----
+	@PostMapping("/signup")
+	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+		}
+
+		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+		}
+
+		User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
+				encoder.encode(signUpRequest.getPassword()), signUpRequest.getMobile(), signUpRequest.getAddress());
+
+		String strRoles = signUpRequest.getRole();
+		Set<Role> roles = new HashSet<>();
+
+		if (strRoles == null) {
+			Role studentRole = roleRepository.findByName(ERole.ROLE_STUDENT)
+					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+			roles.add(studentRole);
+		} else {
+
+			switch (strRoles) {
+			case "admin":
+				Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+						.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+				roles.add(adminRole);
+
+				break;
+			case "Student":
+				Role studentRole = roleRepository.findByName(ERole.ROLE_STUDENT)
+						.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+				roles.add(studentRole);
+
+				break;
+			case "Faculty":
+				Role facultyRole = roleRepository.findByName(ERole.ROLE_FACULTY)
+						.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+				roles.add(facultyRole);
+
+				break;
+			default:
+				Role userRole = roleRepository.findByName(ERole.ROLE_STUDENT)
+						.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+				roles.add(userRole);
+			}
+
+		}
+
+		user.setRoles(roles);
+		userRepository.save(user);
+
+		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+	}
 }

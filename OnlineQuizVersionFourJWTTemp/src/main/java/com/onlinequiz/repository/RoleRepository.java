@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.onlinequiz.model.ERole;
 import com.onlinequiz.model.Role;
 
+//---Role Repository---
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long>{
+public interface RoleRepository extends JpaRepository<Role, Long> {
 	Optional<Role> findByName(ERole name);
 }

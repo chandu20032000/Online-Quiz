@@ -7,23 +7,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+//----This is the class where a student can view their performance in quiz by means of score obtained ----
 @Entity
 @Table(name = "SocreTable")
 public class Score {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
-    Long scoreId;
+	Long scoreId;
 	@Column
-    String studenId;
+	String studenId;
 	@Column
-    Long quizId;
+	Long quizId;
 	@Column
-    String score;
-	
-    
+	String score;
+
 	public Score() {
-		
+
 	}
 
 	public Score(String studenId, Long quizId, String score) {
@@ -32,32 +32,37 @@ public class Score {
 		this.quizId = quizId;
 		this.score = score;
 	}
-	
+
 	public Long getScoreId() {
 		return scoreId;
 	}
+
 	public void setScoreId(Long scoreId) {
 		this.scoreId = scoreId;
 	}
+
 	public String getStudenId() {
 		return studenId;
 	}
+
 	public void setStudenId(String studenId) {
 		this.studenId = studenId;
 	}
+
 	public Long getQuizId() {
 		return quizId;
 	}
+
 	public void setQuizId(Long quizId) {
 		this.quizId = quizId;
 	}
+
 	public String getScore() {
 		return score;
 	}
+
 	public void setScore(String score) {
 		this.score = score;
 	}
-    
-    
-    
+
 }

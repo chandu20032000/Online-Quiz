@@ -7,12 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import com.onlinequiz.model.User;
 
+//----User Repository----
 @Repository
-public interface UserRepository extends JpaRepository<User, String>{
+public interface UserRepository extends JpaRepository<User, String> {
 	Optional<User> findByUsername(String username);
 
-	  Boolean existsByUsername(String username);
+	Boolean existsByUsername(String username);
 
-	  Boolean existsByEmail(String email);
+	Boolean existsByEmail(String email);
 
 }

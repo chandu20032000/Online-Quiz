@@ -3,6 +3,8 @@ package com.onlinequiz.controller;
 import java.util.List;
 import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,37 +26,56 @@ import com.onlinequiz.repository.ScoreRepository;
 public class ScoreController {
 	@Autowired
 	ScoreRepository scoreRepository;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScoreController.class);
+
+	// ---- rest API to add score of a student----
 	@PostMapping
-	ResponseEntity<?> addscore(@RequestBody Score score)
-	{
+	ResponseEntity<?> addscore(@RequestBody Score score) {
+
+		String methodName = "addscore";
+
+		LOGGER.info(methodName + " " + "called");
 		scoreRepository.save(score);
 		return ResponseEntity.ok("score updated!");
-		
+
 	}
-	
+
+	// ----getting all the score that is obtained by the students
 	@GetMapping("/all")
-	ResponseEntity<?> getAllScore()
-	{
-		
+	ResponseEntity<?> getAllScore() {
+		String methodName = "getAllScore";
+
+		LOGGER.info(methodName + " " + "called");
+
 		return ResponseEntity.ok(scoreRepository.findAll());
-		
+
 	}
+
+	// ---- get all the student score by their id----
 	@GetMapping
-	ResponseEntity<?> getByStudentId(@RequestParam String id)
-	{
-		List<Score> list =scoreRepository.findAll();
-		list.removeIf(score->(!Objects.equals(score.getStudenId(), id)));
+	ResponseEntity<?> getByStudentId(@RequestParam String id) {
+
+		String methodName = "getByStudentId";
+
+		LOGGER.info(methodName + " " + "called");
+		List<Score> list = scoreRepository.findAll();
+		list.removeIf(score -> (!Objects.equals(score.getStudenId(), id)));
 		return ResponseEntity.ok(list);
-		
+
 	}
+
+	// ----obtaining all the score with their quizid----
 	@GetMapping("/quiz")
-	ResponseEntity<?> getByQuizId(@RequestParam String id)
-	{
-		List<Score> list =scoreRepository.findAll();
-		list.removeIf(score->(!Objects.equals(score.getQuizId(), Long.parseLong(id))));
+	ResponseEntity<?> getByQuizId(@RequestParam String id) {
+
+		String methodName = "getByQuizId";
+
+		LOGGER.info(methodName + " " + "called");
+		List<Score> list = scoreRepository.findAll();
+		list.removeIf(score -> (!Objects.equals(score.getQuizId(), Long.parseLong(id))));
 		return ResponseEntity.ok(list);
-		
+
 	}
-	
 
 }

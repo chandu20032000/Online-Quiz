@@ -6,7 +6,6 @@ import java.util.List;
 
 public class CreateQuizModel {
 	String name;
-	String userCreatedId;
 	List<QuestionAnswerModel> questionAnswers;
 	public String getName() {
 		return name;
@@ -19,12 +18,6 @@ public class CreateQuizModel {
 	}
 	public void setQuestionAnswers(List<QuestionAnswerModel> questionAnswers) {
 		this.questionAnswers = questionAnswers;
-	}
-	public String getUserCreatedId() {
-		return userCreatedId;
-	}
-	public void setUserCreatedId(String userCreatedId) {
-		this.userCreatedId = userCreatedId;
 	}
 	
 	

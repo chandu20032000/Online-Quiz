@@ -1,0 +1,47 @@
+{"properties": [
+  {
+    "name": "log4j2.appender.console.type",
+    "type": "java.lang.String",
+    "description": "A description for 'log4j2.appender.console.type'"
+  },
+  {
+    "name": "log4j2.appender.console.name",
+    "type": "java.lang.String",
+    "description": "A description for 'log4j2.appender.console.name'"
+  },
+  {
+    "name": "log4j2.appender.console.layout.pattern",
+    "type": "java.lang.String",
+    "description": "A description for 'log4j2.appender.console.layout.pattern'"
+  },
+  {
+    "name": "rootLogger.appenderRef.stdout.ref",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLogger.appenderRef.stdout.ref'"
+  },
+  {
+    "name": "appenders",
+    "type": "java.lang.String",
+    "description": "A description for 'appenders'"
+  },
+  {
+    "name": "rootLogger.level",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLogger.level'"
+  },
+  {
+    "name": "log4j2.rootLogger.appenderRef.stdout.ref",
+    "type": "java.lang.String",
+    "description": "A description for 'log4j2.rootLogger.appenderRef.stdout.ref'"
+  },
+  {
+    "name": "log4j2.rootLogger.appenderRef.stdout.ref",
+    "type": "java.lang.String",
+    "description": "A description for 'log4j2.rootLogger.appenderRef.stdout.ref'"
+  },
+  {
+    "name": "log4j2.rootLogger.appenderRef.stdout.ref",
+    "type": "java.lang.String",
+    "description": "A description for 'log4j2.rootLogger.appenderRef.stdout.ref'"
+  }
+]}

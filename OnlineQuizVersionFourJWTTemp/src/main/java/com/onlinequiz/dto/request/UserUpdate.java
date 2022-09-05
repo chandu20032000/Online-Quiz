@@ -5,14 +5,6 @@ public class UserUpdate {
 	String address;
 	String password;
 	String email;
-	
-	public UserUpdate(String mobile, String address, String password, String email) {
-		super();
-		this.mobile = mobile;
-		this.address = address;
-		this.password = password;
-		this.email = email;
-	}
 	public String getEmail() {
 		return email;
 	}
@@ -28,9 +20,14 @@ public class UserUpdate {
 	public String getMobile() {
 		return mobile;
 	}
-	
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 	public String getAddress() {
 		return address;
 	}
-	
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 }
